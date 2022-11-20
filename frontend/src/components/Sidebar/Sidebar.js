@@ -120,6 +120,105 @@ function Sidebar({ location, structure }) {
         />
 
         <SidebarLink
+          label='Customer'
+          link='/admin/customer'
+          location={location}
+          isSidebarOpened={isSidebarOpenedWrapper}
+          icon={<CoreIcon />}
+          toggleDrawer={toggleDrawer(true)}
+        />
+
+        <SidebarLink
+          label='Item'
+          link='/admin/item'
+          location={location}
+          isSidebarOpened={isSidebarOpenedWrapper}
+          icon={<CoreIcon />}
+          toggleDrawer={toggleDrawer(true)}
+        />
+
+        <SidebarLink
+          label='Chartofaccount'
+          link='/admin/chartofaccount'
+          location={location}
+          isSidebarOpened={isSidebarOpenedWrapper}
+          icon={<CoreIcon />}
+          toggleDrawer={toggleDrawer(true)}
+        />
+
+        <SidebarLink
+          label='Supplier'
+          link='/admin/supplier'
+          location={location}
+          isSidebarOpened={isSidebarOpenedWrapper}
+          icon={<CoreIcon />}
+          toggleDrawer={toggleDrawer(true)}
+        />
+
+        <SidebarLink
+          label='Service'
+          link='/admin/service'
+          location={location}
+          isSidebarOpened={isSidebarOpenedWrapper}
+          icon={<CoreIcon />}
+          toggleDrawer={toggleDrawer(true)}
+        />
+
+        <SidebarLink
+          label='State'
+          link='/admin/state'
+          location={location}
+          isSidebarOpened={isSidebarOpenedWrapper}
+          icon={<CoreIcon />}
+          toggleDrawer={toggleDrawer(true)}
+        />
+
+        <SidebarLink
+          label='Country'
+          link='/admin/country'
+          location={location}
+          isSidebarOpened={isSidebarOpenedWrapper}
+          icon={<CoreIcon />}
+          toggleDrawer={toggleDrawer(true)}
+        />
+
+        <SidebarLink
+          label='City'
+          link='/admin/city'
+          location={location}
+          isSidebarOpened={isSidebarOpenedWrapper}
+          icon={<CoreIcon />}
+          toggleDrawer={toggleDrawer(true)}
+        />
+
+        <SidebarLink
+          label='Itemgroup'
+          link='/admin/itemgroup'
+          location={location}
+          isSidebarOpened={isSidebarOpenedWrapper}
+          icon={<CoreIcon />}
+          toggleDrawer={toggleDrawer(true)}
+        />
+
+        <SidebarLink
+          label='Salesorder'
+          link='/admin/salesorder'
+          location={location}
+          isSidebarOpened={isSidebarOpenedWrapper}
+          icon={<CoreIcon />}
+          toggleDrawer={toggleDrawer(true)}
+        />
+
+        <SidebarLink
+          label='Salesorderdetails'
+          link='/admin/salesorderdetails'
+          location={location}
+          isSidebarOpened={isSidebarOpenedWrapper}
+          icon={<CoreIcon />}
+          toggleDrawer={toggleDrawer(true)}
+        />
+
+        <SidebarLink
           label='Documentation'
           link='/documentation'
           location={location}
