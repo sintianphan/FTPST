@@ -53,6 +53,15 @@ ref: {
       through: 'salesorderOrderdetailsIDSalesorderdetails',
     });
 
+    db.salesorder.belongsToMany(db.item, {
+      as: 'itemcode',
+      foreignKey: {
+        name: 'salesorder_itemcodeId',
+      },
+      constraints: false,
+      through: 'salesorderItemcodeItem',
+    });
+
     db.salesorder.belongsTo(db.users, {
       as: 'createdBy',
     });

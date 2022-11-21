@@ -3,6 +3,8 @@ import * as dataFormat from 'pages/CRUD/Salesorder/table/SalesorderDataFormatter
 
 // eslint-disable-next-line
 import * as salesorderdetailsDataFormat from 'pages/CRUD/Salesorderdetails/table/SalesorderdetailsDataFormatters';
+// eslint-disable-next-line
+import * as itemDataFormat from 'pages/CRUD/Item/table/ItemDataFormatters';
 
 import actions from 'actions/salesorder/salesorderListActions';
 import React from 'react';
@@ -214,6 +216,15 @@ const SalesorderTable = () => {
         flex: 1,
 
       headerName: "Orderdetails ID"
+      },
+
+      { field: "itemcode",
+
+        sortable: false,
+        renderCell: (params) => itemDataFormat.listFormatter(params.row[params.field], history, 'item'),
+        flex: 1,
+
+      headerName: "Itemcode"
       },
 
       {

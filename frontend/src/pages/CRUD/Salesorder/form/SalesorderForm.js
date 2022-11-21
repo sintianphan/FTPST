@@ -27,6 +27,8 @@ import Widget from 'components/Widget';
 
 import SalesorderdetailsSelectItem from 'pages/CRUD/Salesorderdetails/helpers/SalesorderdetailsSelectItem';
 
+import ItemSelectItem from 'pages/CRUD/Item/helpers/ItemSelectItem';
+
 const SalesorderForm = (props) => {
 
   const {
@@ -103,6 +105,16 @@ const SalesorderForm = (props) => {
       <Grid item>
         <SalesorderdetailsSelectItem
         name={'orderdetailsID'}
+        schema={salesorderFields}
+        showCreate={!modal}
+        multiple
+        form={form}
+        />
+      </Grid>
+
+      <Grid item>
+        <ItemSelectItem
+        name={'itemcode'}
         schema={salesorderFields}
         showCreate={!modal}
         multiple
