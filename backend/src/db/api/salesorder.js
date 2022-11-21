@@ -39,6 +39,10 @@ module.exports = class SalesorderDBApi {
   { transaction },
   );
 
+    await salesorder.setOrderdetailsID(data.orderdetailsID || [], {
+    transaction,
+    });
+
   return salesorder;
   }
 
@@ -72,6 +76,10 @@ module.exports = class SalesorderDBApi {
       },
       {transaction},
     );
+
+    await salesorder.setOrderdetailsID(data.orderdetailsID || [], {
+      transaction,
+    });
 
     return salesorder;
   }
@@ -109,6 +117,10 @@ module.exports = class SalesorderDBApi {
 
     const output = salesorder.get({plain: true});
 
+    output.orderdetailsID = await salesorder.getOrderdetailsID({
+      transaction
+    });
+
     return output;
   }
 
@@ -124,6 +136,17 @@ module.exports = class SalesorderDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
+      {
+        model: db.salesorderdetails,
+        as: 'orderdetailsID',
+        through: filter.orderdetailsID ? { where: {
+          [Op.or]: filter.orderdetailsID.split('|').map(item => {
+            return { ['Id']: Utils.uuid(item) }
+          })
+        }} : null,
+        required: filter.orderdetailsID ? true : null,
+      },
 
     ];
 

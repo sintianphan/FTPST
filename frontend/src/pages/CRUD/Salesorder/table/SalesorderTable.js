@@ -1,6 +1,9 @@
 // eslint-disable-next-line
 import * as dataFormat from 'pages/CRUD/Salesorder/table/SalesorderDataFormatters';
 
+// eslint-disable-next-line
+import * as salesorderdetailsDataFormat from 'pages/CRUD/Salesorderdetails/table/SalesorderdetailsDataFormatters';
+
 import actions from 'actions/salesorder/salesorderListActions';
 import React from 'react';
 import {Link} from 'react-router-dom';
@@ -202,6 +205,15 @@ const SalesorderTable = () => {
         flex: 0.6,
 
       headerName: "Ref"
+      },
+
+      { field: "orderdetailsID",
+
+        sortable: false,
+        renderCell: (params) => salesorderdetailsDataFormat.listFormatter(params.row[params.field], history, 'salesorderdetails'),
+        flex: 1,
+
+      headerName: "Orderdetails ID"
       },
 
       {

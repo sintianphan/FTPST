@@ -44,6 +44,15 @@ ref: {
 
   salesorder.associate = (db) => {
 
+    db.salesorder.belongsToMany(db.salesorderdetails, {
+      as: 'orderdetailsID',
+      foreignKey: {
+        name: 'salesorder_orderdetailsIDId',
+      },
+      constraints: false,
+      through: 'salesorderOrderdetailsIDSalesorderdetails',
+    });
+
     db.salesorder.belongsTo(db.users, {
       as: 'createdBy',
     });
