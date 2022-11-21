@@ -59,7 +59,7 @@ const SalesorderdetailsTable = () => {
 
   const [filters, setFilters] = React.useState([
 
-          {label: 'Item', title: 'item'},
+          {label: 'Item', title: 'item'},{label: 'Description', title: 'description'},
   ]);
 
   const [filterItems, setFilterItems] = React.useState([]);
@@ -193,6 +193,15 @@ const SalesorderdetailsTable = () => {
         flex: 1,
 
       headerName: "Item"
+      },
+
+      { field: "description",
+
+        sortable: false,
+        renderCell: (params) => itemDataFormat.listFormatter(params.row[params.field], history, 'item'),
+        flex: 1,
+
+      headerName: "Description"
       },
 
       {

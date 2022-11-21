@@ -12,6 +12,16 @@ const salesorderdetailsFields = {
 
     },
 
+    description: { type: 'relation_one', label: 'Description',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
 }
 
 export default salesorderdetailsFields;

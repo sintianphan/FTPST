@@ -37,6 +37,14 @@ module.exports = function(sequelize, DataTypes) {
       constraints: false,
     });
 
+    db.salesorderdetails.belongsTo(db.item, {
+      as: 'description',
+      foreignKey: {
+        name: 'descriptionId',
+      },
+      constraints: false,
+    });
+
     db.salesorderdetails.belongsTo(db.users, {
       as: 'createdBy',
     });
