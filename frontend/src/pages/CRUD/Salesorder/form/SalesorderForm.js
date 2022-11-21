@@ -25,6 +25,8 @@ import PreparedValues from 'components/FormItems/preparedValues';
 import FormValidations from 'components/FormItems/formValidations';
 import Widget from 'components/Widget';
 
+import SalesorderdetailsSelectItem from 'pages/CRUD/Salesorderdetails/helpers/SalesorderdetailsSelectItem';
+
 const SalesorderForm = (props) => {
 
   const {
@@ -95,6 +97,16 @@ const SalesorderForm = (props) => {
           name={'ref'}
           schema={salesorderFields}
 
+        />
+      </Grid>
+
+      <Grid item>
+        <SalesorderdetailsSelectItem
+        name={'orderdetailsID'}
+        schema={salesorderFields}
+        showCreate={!modal}
+        multiple
+        form={form}
         />
       </Grid>
 
