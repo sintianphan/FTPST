@@ -5,9 +5,7 @@ import { connect } from 'react-redux';
 
 async function selectList(query, limit) {
   const params = { query, limit };
-  const response = await axios.get(`/salesorderdetails/autocomplete`, {
-    params,
-  });
+  const response = await axios.get(`/salesorderdetails/autocomplete`, { params });
   return response.data;
 }
 
@@ -52,7 +50,10 @@ const SalesorderdetailsSelectItem = (props) => {
     },
   };
 
-  const { form, ...rest } = props;
+  const {
+    form,
+    ...rest
+  } = props;
 
   return (
     <React.Fragment>
@@ -65,10 +66,12 @@ const SalesorderdetailsSelectItem = (props) => {
       />
     </React.Fragment>
   );
-};
+}
 
 const select = (state) => ({
-  hasPermissionToCreate: state.salesorderdetails.hasPermissionToCreate,
+  hasPermissionToCreate: state.salesorderdetails.hasPermissionToCreate
 });
 
-export default connect(select)(SalesorderdetailsSelectItem);
+export default connect(select)(
+  SalesorderdetailsSelectItem,
+);

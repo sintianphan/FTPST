@@ -5,54 +5,69 @@ module.exports = class ChartofaccountService {
   static async create(data, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      await ChartofaccountDBApi.create(data, {
-        currentUser,
-        transaction,
-      });
+      await ChartofaccountDBApi.create(
+        data,
+        {
+          currentUser,
+          transaction,
+        },
+      );
 
       await transaction.commit();
     } catch (error) {
       await transaction.rollback();
       throw error;
     }
-  }
+  };
   static async update(data, id, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
       let chartofaccount = await ChartofaccountDBApi.findBy(
-        { id },
-        { transaction },
+        {id},
+        {transaction},
       );
 
       if (!chartofaccount) {
-        throw new ValidationError('chartofaccountNotFound');
+        throw new ValidationError(
+          'chartofaccountNotFound',
+        );
       }
 
-      await ChartofaccountDBApi.update(id, data, {
-        currentUser,
-        transaction,
-      });
+      await ChartofaccountDBApi.update(
+        id,
+        data,
+        {
+          currentUser,
+          transaction,
+        },
+      );
 
       await transaction.commit();
       return chartofaccount;
+
     } catch (error) {
       await transaction.rollback();
       throw error;
     }
-  }
+  };
 
   static async remove(id, currentUser) {
     const transaction = await db.sequelize.transaction();
 
     try {
       if (currentUser.role !== 'admin') {
-        throw new ValidationError('errors.forbidden.message');
+        throw new ValidationError(
+          'errors.forbidden.message',
+        );
       }
 
-      await ChartofaccountDBApi.remove(id, {
-        currentUser,
-        transaction,
-      });
+      await ChartofaccountDBApi.remove(
+        id,
+        {
+          currentUser,
+          transaction,
+        },
+      );
 
       await transaction.commit();
     } catch (error) {
@@ -61,3 +76,4 @@ module.exports = class ChartofaccountService {
     }
   }
 };
+

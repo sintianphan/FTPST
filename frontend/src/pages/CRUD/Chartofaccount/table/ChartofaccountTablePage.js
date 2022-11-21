@@ -7,6 +7,6 @@ const ChartofaccountTablePage = () => {
       <ChartofaccountTable />
     </div>
   );
-};
+}
 
 export default ChartofaccountTablePage;

@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,28 +8,37 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class ItemgroupDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const itemgroup = await db.itemgroup.create(
-      {
-        id: data.id || undefined,
+  const itemgroup = await db.itemgroup.create(
+  {
+  id: data.id || undefined,
 
-        code: data.code || null,
-        name: data.name || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    code: data.code
+    ||
+    null
+,
 
-    return itemgroup;
+    name: data.name
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return itemgroup;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const itemgroup = await db.itemgroup.findByPk(id, {
@@ -37,33 +47,39 @@ module.exports = class ItemgroupDBApi {
 
     await itemgroup.update(
       {
-        code: data.code || null,
-        name: data.name || null,
+
+        code: data.code
+        ||
+        null
+,
+
+        name: data.name
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return itemgroup;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const itemgroup = await db.itemgroup.findByPk(id, options);
 
-    await itemgroup.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await itemgroup.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await itemgroup.destroy({
-      transaction,
+      transaction
     });
 
     return itemgroup;
@@ -72,13 +88,16 @@ module.exports = class ItemgroupDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const itemgroup = await db.itemgroup.findOne({ where }, { transaction });
+    const itemgroup = await db.itemgroup.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!itemgroup) {
       return itemgroup;
     }
 
-    const output = itemgroup.get({ plain: true });
+    const output = itemgroup.get({plain: true});
 
     return output;
   }
@@ -94,7 +113,9 @@ module.exports = class ItemgroupDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -107,14 +128,22 @@ module.exports = class ItemgroupDBApi {
       if (filter.code) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('itemgroup', 'code', filter.code),
+          [Op.and]: Utils.ilike(
+            'itemgroup',
+            'code',
+            filter.code,
+          ),
         };
       }
 
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('itemgroup', 'name', filter.name),
+          [Op.and]: Utils.ilike(
+            'itemgroup',
+            'name',
+            filter.name,
+          ),
         };
       }
 
@@ -126,7 +155,9 @@ module.exports = class ItemgroupDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -155,23 +186,24 @@ module.exports = class ItemgroupDBApi {
       }
     }
 
-    let { rows, count } = await db.itemgroup.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.itemgroup.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -183,13 +215,17 @@ module.exports = class ItemgroupDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('itemgroup', 'id', query),
+          Utils.ilike(
+            'itemgroup',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.itemgroup.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -200,4 +236,6 @@ module.exports = class ItemgroupDBApi {
       label: record.id,
     }));
   }
+
 };
+

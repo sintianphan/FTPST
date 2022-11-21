@@ -7,6 +7,6 @@ const CountryTablePage = () => {
       <CountryTable />
     </div>
   );
-};
+}
 
 export default CountryTablePage;

@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,43 +8,64 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class SupplierDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const supplier = await db.supplier.create(
-      {
-        id: data.id || undefined,
+  const supplier = await db.supplier.create(
+  {
+  id: data.id || undefined,
 
-        code: data.code || null,
-        name: data.name || null,
-        address1: data.address1 || null,
-        address2: data.address2 || null,
-        postcode: data.postcode || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    code: data.code
+    ||
+    null
+,
+
+    name: data.name
+    ||
+    null
+,
+
+    address1: data.address1
+    ||
+    null
+,
+
+    address2: data.address2
+    ||
+    null
+,
+
+    postcode: data.postcode
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
 
     await supplier.setCity(data.city || null, {
-      transaction,
+    transaction,
     });
 
     await supplier.setState(data.state || null, {
-      transaction,
+    transaction,
     });
 
     await supplier.setCountry(data.country || null, {
-      transaction,
+    transaction,
     });
 
-    return supplier;
+  return supplier;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const supplier = await db.supplier.findByPk(id, {
@@ -52,14 +74,35 @@ module.exports = class SupplierDBApi {
 
     await supplier.update(
       {
-        code: data.code || null,
-        name: data.name || null,
-        address1: data.address1 || null,
-        address2: data.address2 || null,
-        postcode: data.postcode || null,
+
+        code: data.code
+        ||
+        null
+,
+
+        name: data.name
+        ||
+        null
+,
+
+        address1: data.address1
+        ||
+        null
+,
+
+        address2: data.address2
+        ||
+        null
+,
+
+        postcode: data.postcode
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     await supplier.setCity(data.city || null, {
@@ -78,22 +121,19 @@ module.exports = class SupplierDBApi {
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const supplier = await db.supplier.findByPk(id, options);
 
-    await supplier.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await supplier.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await supplier.destroy({
-      transaction,
+      transaction
     });
 
     return supplier;
@@ -102,24 +142,27 @@ module.exports = class SupplierDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const supplier = await db.supplier.findOne({ where }, { transaction });
+    const supplier = await db.supplier.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!supplier) {
       return supplier;
     }
 
-    const output = supplier.get({ plain: true });
+    const output = supplier.get({plain: true});
 
     output.city = await supplier.getCity({
-      transaction,
+      transaction
     });
 
     output.state = await supplier.getState({
-      transaction,
+      transaction
     });
 
     output.country = await supplier.getCountry({
-      transaction,
+      transaction
     });
 
     return output;
@@ -137,6 +180,7 @@ module.exports = class SupplierDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
       {
         model: db.city,
         as: 'city',
@@ -151,6 +195,7 @@ module.exports = class SupplierDBApi {
         model: db.country,
         as: 'country',
       },
+
     ];
 
     if (filter) {
@@ -164,35 +209,55 @@ module.exports = class SupplierDBApi {
       if (filter.code) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('supplier', 'code', filter.code),
+          [Op.and]: Utils.ilike(
+            'supplier',
+            'code',
+            filter.code,
+          ),
         };
       }
 
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('supplier', 'name', filter.name),
+          [Op.and]: Utils.ilike(
+            'supplier',
+            'name',
+            filter.name,
+          ),
         };
       }
 
       if (filter.address1) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('supplier', 'address1', filter.address1),
+          [Op.and]: Utils.ilike(
+            'supplier',
+            'address1',
+            filter.address1,
+          ),
         };
       }
 
       if (filter.address2) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('supplier', 'address2', filter.address2),
+          [Op.and]: Utils.ilike(
+            'supplier',
+            'address2',
+            filter.address2,
+          ),
         };
       }
 
       if (filter.postcode) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('supplier', 'postcode', filter.postcode),
+          [Op.and]: Utils.ilike(
+            'supplier',
+            'postcode',
+            filter.postcode,
+          ),
         };
       }
 
@@ -204,40 +269,42 @@ module.exports = class SupplierDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
       if (filter.city) {
-        var listItems = filter.city.split('|').map((item) => {
-          return Utils.uuid(item);
+        var listItems = filter.city.split('|').map(item => {
+          return  Utils.uuid(item)
         });
 
         where = {
           ...where,
-          cityId: { [Op.or]: listItems },
+          cityId: {[Op.or]: listItems}
         };
       }
 
       if (filter.state) {
-        var listItems = filter.state.split('|').map((item) => {
-          return Utils.uuid(item);
+        var listItems = filter.state.split('|').map(item => {
+          return  Utils.uuid(item)
         });
 
         where = {
           ...where,
-          stateId: { [Op.or]: listItems },
+          stateId: {[Op.or]: listItems}
         };
       }
 
       if (filter.country) {
-        var listItems = filter.country.split('|').map((item) => {
-          return Utils.uuid(item);
+        var listItems = filter.country.split('|').map(item => {
+          return  Utils.uuid(item)
         });
 
         where = {
           ...where,
-          countryId: { [Op.or]: listItems },
+          countryId: {[Op.or]: listItems}
         };
       }
 
@@ -266,23 +333,24 @@ module.exports = class SupplierDBApi {
       }
     }
 
-    let { rows, count } = await db.supplier.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.supplier.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -294,13 +362,17 @@ module.exports = class SupplierDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('supplier', 'id', query),
+          Utils.ilike(
+            'supplier',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.supplier.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -311,4 +383,6 @@ module.exports = class SupplierDBApi {
       label: record.id,
     }));
   }
+
 };
+

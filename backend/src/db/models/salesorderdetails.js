@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const salesorderdetails = sequelize.define(
     'salesorderdetails',
     {
@@ -28,6 +28,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   salesorderdetails.associate = (db) => {
+
     db.salesorderdetails.belongsTo(db.item, {
       as: 'item',
       foreignKey: {
@@ -47,3 +48,4 @@ module.exports = function (sequelize, DataTypes) {
 
   return salesorderdetails;
 };
+

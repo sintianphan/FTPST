@@ -7,6 +7,6 @@ const SupplierTablePage = () => {
       <SupplierTable />
     </div>
   );
-};
+}
 
 export default SupplierTablePage;

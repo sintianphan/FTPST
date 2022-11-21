@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,27 +8,32 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class StateDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const state = await db.state.create(
-      {
-        id: data.id || undefined,
+  const state = await db.state.create(
+  {
+  id: data.id || undefined,
 
-        name: data.name || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    name: data.name
+    ||
+    null
+,
 
-    return state;
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return state;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const state = await db.state.findByPk(id, {
@@ -36,32 +42,34 @@ module.exports = class StateDBApi {
 
     await state.update(
       {
-        name: data.name || null,
+
+        name: data.name
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return state;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const state = await db.state.findByPk(id, options);
 
-    await state.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await state.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await state.destroy({
-      transaction,
+      transaction
     });
 
     return state;
@@ -70,13 +78,16 @@ module.exports = class StateDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const state = await db.state.findOne({ where }, { transaction });
+    const state = await db.state.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!state) {
       return state;
     }
 
-    const output = state.get({ plain: true });
+    const output = state.get({plain: true});
 
     return output;
   }
@@ -92,7 +103,9 @@ module.exports = class StateDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -105,7 +118,11 @@ module.exports = class StateDBApi {
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('state', 'name', filter.name),
+          [Op.and]: Utils.ilike(
+            'state',
+            'name',
+            filter.name,
+          ),
         };
       }
 
@@ -117,7 +134,9 @@ module.exports = class StateDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -146,23 +165,24 @@ module.exports = class StateDBApi {
       }
     }
 
-    let { rows, count } = await db.state.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.state.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -174,13 +194,17 @@ module.exports = class StateDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('state', 'id', query),
+          Utils.ilike(
+            'state',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.state.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -191,4 +215,6 @@ module.exports = class StateDBApi {
       label: record.id,
     }));
   }
+
 };
+

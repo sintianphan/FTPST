@@ -7,6 +7,6 @@ const StateTablePage = () => {
       <StateTable />
     </div>
   );
-};
+}
 
 export default StateTablePage;

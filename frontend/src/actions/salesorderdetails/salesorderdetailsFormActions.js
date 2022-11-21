@@ -17,14 +17,14 @@ const actions = {
         type: 'SALESORDERDETAILS_FORM_FIND_STARTED',
       });
 
-      axios.get(`/salesorderdetails/${id}`).then((res) => {
+      axios.get(`/salesorderdetails/${id}`).then(res => {
         const record = res.data;
 
         dispatch({
           type: 'SALESORDERDETAILS_FORM_FIND_SUCCESS',
           payload: record,
         });
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -42,13 +42,13 @@ const actions = {
         type: 'SALESORDERDETAILS_FORM_CREATE_STARTED',
       });
 
-      axios.post('/salesorderdetails', { data: values }).then((res) => {
+      axios.post('/salesorderdetails', { data: values }).then(res => {
         dispatch({
           type: 'SALESORDERDETAILS_FORM_CREATE_SUCCESS',
         });
         showSnackbar({ type: 'success', message: 'Salesorderdetails created' });
         dispatch(push('/admin/salesorderdetails'));
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -58,13 +58,16 @@ const actions = {
     }
   },
 
-  doUpdate: (id, values, isProfile) => async (dispatch, getState) => {
+  doUpdate: (id, values, isProfile) => async (
+    dispatch,
+    getState,
+  ) => {
     try {
       dispatch({
         type: 'SALESORDERDETAILS_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/salesorderdetails/${id}`, { id, data: values });
+      await axios.put(`/salesorderdetails/${id}`, {id, data: values});
 
       dispatch(doInit());
 

@@ -17,14 +17,14 @@ const actions = {
         type: 'SUPPLIER_FORM_FIND_STARTED',
       });
 
-      axios.get(`/supplier/${id}`).then((res) => {
+      axios.get(`/supplier/${id}`).then(res => {
         const record = res.data;
 
         dispatch({
           type: 'SUPPLIER_FORM_FIND_SUCCESS',
           payload: record,
         });
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -42,13 +42,13 @@ const actions = {
         type: 'SUPPLIER_FORM_CREATE_STARTED',
       });
 
-      axios.post('/supplier', { data: values }).then((res) => {
+      axios.post('/supplier', { data: values }).then(res => {
         dispatch({
           type: 'SUPPLIER_FORM_CREATE_SUCCESS',
         });
         showSnackbar({ type: 'success', message: 'Supplier created' });
         dispatch(push('/admin/supplier'));
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -58,13 +58,16 @@ const actions = {
     }
   },
 
-  doUpdate: (id, values, isProfile) => async (dispatch, getState) => {
+  doUpdate: (id, values, isProfile) => async (
+    dispatch,
+    getState,
+  ) => {
     try {
       dispatch({
         type: 'SUPPLIER_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/supplier/${id}`, { id, data: values });
+      await axios.put(`/supplier/${id}`, {id, data: values});
 
       dispatch(doInit());
 

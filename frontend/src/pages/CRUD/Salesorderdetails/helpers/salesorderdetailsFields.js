@@ -1,12 +1,17 @@
+
 const salesorderdetailsFields = {
-  id: { type: 'id', label: 'ID' },
+	id: { type: 'id', label: 'ID' },
 
-  item: {
-    type: 'relation_one',
-    label: 'Item',
+    item: { type: 'relation_one', label: 'Item',
 
-    options: [{ value: 'value', label: 'value' }],
-  },
-};
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+}
 
 export default salesorderdetailsFields;

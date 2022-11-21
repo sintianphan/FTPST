@@ -50,7 +50,10 @@ const ServiceSelectItem = (props) => {
     },
   };
 
-  const { form, ...rest } = props;
+  const {
+    form,
+    ...rest
+  } = props;
 
   return (
     <React.Fragment>
@@ -63,10 +66,12 @@ const ServiceSelectItem = (props) => {
       />
     </React.Fragment>
   );
-};
+}
 
 const select = (state) => ({
-  hasPermissionToCreate: state.service.hasPermissionToCreate,
+  hasPermissionToCreate: state.service.hasPermissionToCreate
 });
 
-export default connect(select)(ServiceSelectItem);
+export default connect(select)(
+  ServiceSelectItem,
+);

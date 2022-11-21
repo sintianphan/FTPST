@@ -1,99 +1,117 @@
 module.exports = {
-  /**
-   * @param {QueryInterface} queryInterface
-   * @param {Sequelize} Sequelize
-   * @returns {Promise<void>}
-   */
-  async up(queryInterface, Sequelize) {
     /**
-     * @type {Transaction}
+     * @param {QueryInterface} queryInterface
+     * @param {Sequelize} Sequelize
+     * @returns {Promise<void>}
      */
-    const transaction = await queryInterface.sequelize.transaction();
-    try {
-      await queryInterface.addColumn(
-        'supplier',
-        'cityId',
-        {
-          type: Sequelize.DataTypes.UUID,
+    async up(queryInterface, Sequelize) {
+        /**
+         * @type {Transaction}
+         */
+        const transaction = await queryInterface.sequelize.transaction();
+        try {
 
-          references: {
-            model: 'city',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
+                    await queryInterface.addColumn(
+                      'supplier',
+                      'cityId',
+                      {
+                          type: Sequelize.DataTypes.UUID,
 
-      await queryInterface.addColumn(
-        'supplier',
-        'stateId',
-        {
-          type: Sequelize.DataTypes.UUID,
+                            references: {
+                                model: 'city',
+                                key: 'id',
+                            },
 
-          references: {
-            model: 'state',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
+                      },
+                      { transaction }
+                    );
 
-      await queryInterface.addColumn(
-        'supplier',
-        'countryId',
-        {
-          type: Sequelize.DataTypes.UUID,
+                    await queryInterface.addColumn(
+                      'supplier',
+                      'stateId',
+                      {
+                          type: Sequelize.DataTypes.UUID,
 
-          references: {
-            model: 'country',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
+                            references: {
+                                model: 'state',
+                                key: 'id',
+                            },
 
-      await queryInterface.addColumn(
-        'supplier',
-        'postcode',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
+                      },
+                      { transaction }
+                    );
 
-      await transaction.commit();
-    } catch (err) {
-      await transaction.rollback();
-      throw err;
-    }
-  },
-  /**
-   * @param {QueryInterface} queryInterface
-   * @param {Sequelize} Sequelize
-   * @returns {Promise<void>}
-   */
-  async down(queryInterface, Sequelize) {
+                    await queryInterface.addColumn(
+                      'supplier',
+                      'countryId',
+                      {
+                          type: Sequelize.DataTypes.UUID,
+
+                            references: {
+                                model: 'country',
+                                key: 'id',
+                            },
+
+                      },
+                      { transaction }
+                    );
+
+                    await queryInterface.addColumn(
+                      'supplier',
+                      'postcode',
+                      {
+                          type: Sequelize.DataTypes.TEXT,
+
+                      },
+                      { transaction }
+                    );
+
+            await transaction.commit();
+        } catch (err) {
+            await transaction.rollback();
+            throw err;
+        }
+    },
     /**
-     * @type {Transaction}
+     * @param {QueryInterface} queryInterface
+     * @param {Sequelize} Sequelize
+     * @returns {Promise<void>}
      */
-    const transaction = await queryInterface.sequelize.transaction();
-    try {
-      await queryInterface.removeColumn('supplier', 'postcode', {
-        transaction,
-      });
+    async down(queryInterface, Sequelize) {
+        /**
+         * @type {Transaction}
+         */
+        const transaction = await queryInterface.sequelize.transaction();
+        try {
 
-      await queryInterface.removeColumn('supplier', 'countryId', {
-        transaction,
-      });
+                    await queryInterface.removeColumn(
+                        'supplier',
+                        'postcode',
+                        { transaction }
+                    );
 
-      await queryInterface.removeColumn('supplier', 'stateId', { transaction });
+                    await queryInterface.removeColumn(
+                        'supplier',
+                        'countryId',
+                        { transaction }
+                    );
 
-      await queryInterface.removeColumn('supplier', 'cityId', { transaction });
+                    await queryInterface.removeColumn(
+                        'supplier',
+                        'stateId',
+                        { transaction }
+                    );
 
-      await transaction.commit();
-    } catch (err) {
-      await transaction.rollback();
-      throw err;
+                    await queryInterface.removeColumn(
+                        'supplier',
+                        'cityId',
+                        { transaction }
+                    );
+
+            await transaction.commit();
+        } catch (err) {
+            await transaction.rollback();
+            throw err;
+        }
     }
-  },
 };

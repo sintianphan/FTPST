@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,26 +8,27 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class ChartofaccountDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const chartofaccount = await db.chartofaccount.create(
-      {
-        id: data.id || undefined,
+  const chartofaccount = await db.chartofaccount.create(
+  {
+  id: data.id || undefined,
 
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
 
-    return chartofaccount;
+  return chartofaccount;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const chartofaccount = await db.chartofaccount.findByPk(id, {
@@ -35,31 +37,29 @@ module.exports = class ChartofaccountDBApi {
 
     await chartofaccount.update(
       {
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return chartofaccount;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const chartofaccount = await db.chartofaccount.findByPk(id, options);
 
-    await chartofaccount.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await chartofaccount.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await chartofaccount.destroy({
-      transaction,
+      transaction
     });
 
     return chartofaccount;
@@ -77,7 +77,7 @@ module.exports = class ChartofaccountDBApi {
       return chartofaccount;
     }
 
-    const output = chartofaccount.get({ plain: true });
+    const output = chartofaccount.get({plain: true});
 
     return output;
   }
@@ -93,7 +93,9 @@ module.exports = class ChartofaccountDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -111,7 +113,9 @@ module.exports = class ChartofaccountDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -140,23 +144,24 @@ module.exports = class ChartofaccountDBApi {
       }
     }
 
-    let { rows, count } = await db.chartofaccount.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.chartofaccount.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -168,13 +173,17 @@ module.exports = class ChartofaccountDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('chartofaccount', 'id', query),
+          Utils.ilike(
+            'chartofaccount',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.chartofaccount.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -185,4 +194,6 @@ module.exports = class ChartofaccountDBApi {
       label: record.id,
     }));
   }
+
 };
+

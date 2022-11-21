@@ -26,92 +26,104 @@ import FormValidations from 'components/FormItems/formValidations';
 import Widget from 'components/Widget';
 
 const StateForm = (props) => {
+
   const {
-    isEditing,
-    isProfile,
-    findLoading,
-    saveLoading,
-    record,
-    onSubmit,
-    onCancel,
-    modal,
+  isEditing,
+  isProfile,
+  findLoading,
+  saveLoading,
+  record,
+  onSubmit,
+  onCancel,
+  modal
   } = props;
 
   const iniValues = () => {
-    return IniValues(stateFields, record || {});
-  };
+  return IniValues(stateFields, record || {});
+  }
 
   const formValidations = () => {
-    return FormValidations(stateFields, record || {});
-  };
+  return FormValidations(stateFields, record || {});
+  }
 
   const handleSubmit = (values) => {
-    const { id, ...data } = PreparedValues(stateFields, values || {});
-    onSubmit(id, data);
+  const { id, ...data } = PreparedValues(stateFields, values || {});
+  onSubmit(id, data);
   };
 
   const title = () => {
-    if (isProfile) {
-      return 'Edit My Profile';
-    }
+  if(isProfile) {
+  return 'Edit My Profile';
+  }
 
-    return isEditing ? 'Edit State' : 'Add State';
+  return isEditing
+  ? 'Edit State'
+  : 'Add State';
   };
 
   const renderForm = () => (
-    <Widget title={<h4>{title()}</h4>} collapse close>
-      <Formik
-        onSubmit={handleSubmit}
-        initialValues={iniValues()}
-        validationSchema={formValidations()}
+  <Widget title={<h4>{title()}</h4>} collapse close>
+  <Formik
+          onSubmit={handleSubmit}
+  initialValues={iniValues()}
+  validationSchema={formValidations()}
+  >
+  {(form) => (
+  <form onSubmit={form.handleSubmit}>
+    <Grid container spacing={3} direction="column">
+
+      <Grid item>
+        <InputFormItem
+          name={'name'}
+          schema={stateFields}
+
+            autoFocus
+
+        />
+      </Grid>
+
+  </Grid>
+  <Grid container spacing={3} mt={2}>
+    <Grid item>
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={form.handleSubmit}
       >
-        {(form) => (
-          <form onSubmit={form.handleSubmit}>
-            <Grid container spacing={3} direction='column'>
-              <Grid item>
-                <InputFormItem name={'name'} schema={stateFields} autoFocus />
-              </Grid>
-            </Grid>
-            <Grid container spacing={3} mt={2}>
-              <Grid item>
-                <Button
-                  color='primary'
-                  variant='contained'
-                  onClick={form.handleSubmit}
-                >
-                  Save
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  color='primary'
-                  variant='outlined'
-                  onClick={form.handleReset}
-                >
-                  Reset
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  color='primary'
-                  variant='outlined'
-                  onClick={() => onCancel()}
-                >
-                  Cancel
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-        )}
-      </Formik>
-    </Widget>
+        Save
+      </Button>
+    </Grid>
+    <Grid item>
+      <Button
+        color="primary"
+        variant="outlined"
+        onClick={form.handleReset}
+      >
+        Reset
+      </Button>
+    </Grid>
+    <Grid item>
+      <Button
+        color="primary"
+        variant="outlined"
+        onClick={() => onCancel()}
+      >
+        Cancel
+      </Button>
+    </Grid>
+  </Grid>
+      </form>
+      )
+      }
+    </Formik>
+  </Widget>
   );
   if (findLoading) {
-    return <Loader />;
+  return <Loader />;
   }
   if (isEditing && !record) {
-    return <Loader />;
+  return <Loader />;
   }
   return renderForm();
-};
-export default StateForm;
+  }
+  export default StateForm;

@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const supplier = sequelize.define(
     'supplier',
     {
@@ -14,24 +14,29 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      code: {
+code: {
         type: DataTypes.TEXT,
+
       },
 
-      name: {
+name: {
         type: DataTypes.TEXT,
+
       },
 
-      address1: {
+address1: {
         type: DataTypes.TEXT,
+
       },
 
-      address2: {
+address2: {
         type: DataTypes.TEXT,
+
       },
 
-      postcode: {
+postcode: {
         type: DataTypes.TEXT,
+
       },
 
       importHash: {
@@ -48,6 +53,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   supplier.associate = (db) => {
+
     db.supplier.belongsTo(db.city, {
       as: 'city',
       foreignKey: {
@@ -83,3 +89,4 @@ module.exports = function (sequelize, DataTypes) {
 
   return supplier;
 };
+

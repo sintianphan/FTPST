@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,30 +8,31 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class SalesorderdetailsDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const salesorderdetails = await db.salesorderdetails.create(
-      {
-        id: data.id || undefined,
+  const salesorderdetails = await db.salesorderdetails.create(
+  {
+  id: data.id || undefined,
 
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
 
     await salesorderdetails.setItem(data.item || null, {
-      transaction,
+    transaction,
     });
 
-    return salesorderdetails;
+  return salesorderdetails;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const salesorderdetails = await db.salesorderdetails.findByPk(id, {
@@ -39,9 +41,10 @@ module.exports = class SalesorderdetailsDBApi {
 
     await salesorderdetails.update(
       {
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     await salesorderdetails.setItem(data.item || null, {
@@ -52,22 +55,19 @@ module.exports = class SalesorderdetailsDBApi {
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const salesorderdetails = await db.salesorderdetails.findByPk(id, options);
 
-    await salesorderdetails.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await salesorderdetails.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await salesorderdetails.destroy({
-      transaction,
+      transaction
     });
 
     return salesorderdetails;
@@ -85,10 +85,10 @@ module.exports = class SalesorderdetailsDBApi {
       return salesorderdetails;
     }
 
-    const output = salesorderdetails.get({ plain: true });
+    const output = salesorderdetails.get({plain: true});
 
     output.item = await salesorderdetails.getItem({
-      transaction,
+      transaction
     });
 
     return output;
@@ -106,10 +106,12 @@ module.exports = class SalesorderdetailsDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
       {
         model: db.item,
         as: 'item',
       },
+
     ];
 
     if (filter) {
@@ -128,18 +130,20 @@ module.exports = class SalesorderdetailsDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
       if (filter.item) {
-        var listItems = filter.item.split('|').map((item) => {
-          return Utils.uuid(item);
+        var listItems = filter.item.split('|').map(item => {
+          return  Utils.uuid(item)
         });
 
         where = {
           ...where,
-          itemId: { [Op.or]: listItems },
+          itemId: {[Op.or]: listItems}
         };
       }
 
@@ -168,23 +172,24 @@ module.exports = class SalesorderdetailsDBApi {
       }
     }
 
-    let { rows, count } = await db.salesorderdetails.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.salesorderdetails.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -196,13 +201,17 @@ module.exports = class SalesorderdetailsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('salesorderdetails', 'id', query),
+          Utils.ilike(
+            'salesorderdetails',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.salesorderdetails.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -213,4 +222,6 @@ module.exports = class SalesorderdetailsDBApi {
       label: record.id,
     }));
   }
+
 };
+

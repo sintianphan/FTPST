@@ -17,14 +17,14 @@ const actions = {
         type: 'COUNTRY_FORM_FIND_STARTED',
       });
 
-      axios.get(`/country/${id}`).then((res) => {
+      axios.get(`/country/${id}`).then(res => {
         const record = res.data;
 
         dispatch({
           type: 'COUNTRY_FORM_FIND_SUCCESS',
           payload: record,
         });
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -42,13 +42,13 @@ const actions = {
         type: 'COUNTRY_FORM_CREATE_STARTED',
       });
 
-      axios.post('/country', { data: values }).then((res) => {
+      axios.post('/country', { data: values }).then(res => {
         dispatch({
           type: 'COUNTRY_FORM_CREATE_SUCCESS',
         });
         showSnackbar({ type: 'success', message: 'Country created' });
         dispatch(push('/admin/country'));
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -58,13 +58,16 @@ const actions = {
     }
   },
 
-  doUpdate: (id, values, isProfile) => async (dispatch, getState) => {
+  doUpdate: (id, values, isProfile) => async (
+    dispatch,
+    getState,
+  ) => {
     try {
       dispatch({
         type: 'COUNTRY_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/country/${id}`, { id, data: values });
+      await axios.put(`/country/${id}`, {id, data: values});
 
       dispatch(doInit());
 

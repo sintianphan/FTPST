@@ -7,6 +7,6 @@ const CityTablePage = () => {
       <CityTable />
     </div>
   );
-};
+}
 
 export default CityTablePage;

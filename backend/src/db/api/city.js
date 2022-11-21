@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,27 +8,32 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class CityDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const city = await db.city.create(
-      {
-        id: data.id || undefined,
+  const city = await db.city.create(
+  {
+  id: data.id || undefined,
 
-        name: data.name || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    name: data.name
+    ||
+    null
+,
 
-    return city;
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return city;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const city = await db.city.findByPk(id, {
@@ -36,32 +42,34 @@ module.exports = class CityDBApi {
 
     await city.update(
       {
-        name: data.name || null,
+
+        name: data.name
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return city;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const city = await db.city.findByPk(id, options);
 
-    await city.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await city.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await city.destroy({
-      transaction,
+      transaction
     });
 
     return city;
@@ -70,13 +78,16 @@ module.exports = class CityDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const city = await db.city.findOne({ where }, { transaction });
+    const city = await db.city.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!city) {
       return city;
     }
 
-    const output = city.get({ plain: true });
+    const output = city.get({plain: true});
 
     return output;
   }
@@ -92,7 +103,9 @@ module.exports = class CityDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -105,7 +118,11 @@ module.exports = class CityDBApi {
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('city', 'name', filter.name),
+          [Op.and]: Utils.ilike(
+            'city',
+            'name',
+            filter.name,
+          ),
         };
       }
 
@@ -117,7 +134,9 @@ module.exports = class CityDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -146,23 +165,24 @@ module.exports = class CityDBApi {
       }
     }
 
-    let { rows, count } = await db.city.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.city.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -174,13 +194,17 @@ module.exports = class CityDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('city', 'id', query),
+          Utils.ilike(
+            'city',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.city.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -191,4 +215,6 @@ module.exports = class CityDBApi {
       label: record.id,
     }));
   }
+
 };
+

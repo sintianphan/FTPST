@@ -17,14 +17,14 @@ const actions = {
         type: 'CUSTOMER_FORM_FIND_STARTED',
       });
 
-      axios.get(`/customer/${id}`).then((res) => {
+      axios.get(`/customer/${id}`).then(res => {
         const record = res.data;
 
         dispatch({
           type: 'CUSTOMER_FORM_FIND_SUCCESS',
           payload: record,
         });
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -42,13 +42,13 @@ const actions = {
         type: 'CUSTOMER_FORM_CREATE_STARTED',
       });
 
-      axios.post('/customer', { data: values }).then((res) => {
+      axios.post('/customer', { data: values }).then(res => {
         dispatch({
           type: 'CUSTOMER_FORM_CREATE_SUCCESS',
         });
         showSnackbar({ type: 'success', message: 'Customer created' });
         dispatch(push('/admin/customer'));
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -58,13 +58,16 @@ const actions = {
     }
   },
 
-  doUpdate: (id, values, isProfile) => async (dispatch, getState) => {
+  doUpdate: (id, values, isProfile) => async (
+    dispatch,
+    getState,
+  ) => {
     try {
       dispatch({
         type: 'CUSTOMER_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/customer/${id}`, { id, data: values });
+      await axios.put(`/customer/${id}`, {id, data: values});
 
       dispatch(doInit());
 

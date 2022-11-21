@@ -7,6 +7,6 @@ const ServiceTablePage = () => {
       <ServiceTable />
     </div>
   );
-};
+}
 
 export default ServiceTablePage;

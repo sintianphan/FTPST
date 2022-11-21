@@ -17,14 +17,14 @@ const actions = {
         type: 'SERVICE_FORM_FIND_STARTED',
       });
 
-      axios.get(`/service/${id}`).then((res) => {
+      axios.get(`/service/${id}`).then(res => {
         const record = res.data;
 
         dispatch({
           type: 'SERVICE_FORM_FIND_SUCCESS',
           payload: record,
         });
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -42,13 +42,13 @@ const actions = {
         type: 'SERVICE_FORM_CREATE_STARTED',
       });
 
-      axios.post('/service', { data: values }).then((res) => {
+      axios.post('/service', { data: values }).then(res => {
         dispatch({
           type: 'SERVICE_FORM_CREATE_SUCCESS',
         });
         showSnackbar({ type: 'success', message: 'Service created' });
         dispatch(push('/admin/service'));
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -58,13 +58,16 @@ const actions = {
     }
   },
 
-  doUpdate: (id, values, isProfile) => async (dispatch, getState) => {
+  doUpdate: (id, values, isProfile) => async (
+    dispatch,
+    getState,
+  ) => {
     try {
       dispatch({
         type: 'SERVICE_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/service/${id}`, { id, data: values });
+      await axios.put(`/service/${id}`, {id, data: values});
 
       dispatch(doInit());
 

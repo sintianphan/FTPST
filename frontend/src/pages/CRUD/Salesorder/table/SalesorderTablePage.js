@@ -7,6 +7,6 @@ const SalesorderTablePage = () => {
       <SalesorderTable />
     </div>
   );
-};
+}
 
 export default SalesorderTablePage;

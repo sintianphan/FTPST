@@ -1,12 +1,17 @@
+
 const cityFields = {
-  id: { type: 'id', label: 'ID' },
+	id: { type: 'id', label: 'ID' },
 
-  name: {
-    type: 'string',
-    label: 'Name',
+    name: { type: 'string', label: 'Name',
 
-    options: [{ value: 'value', label: 'value' }],
-  },
-};
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+}
 
 export default cityFields;

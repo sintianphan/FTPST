@@ -1,61 +1,87 @@
+
 const customerFields = {
-  id: { type: 'id', label: 'ID' },
+	id: { type: 'id', label: 'ID' },
 
-  code: {
-    type: 'string',
-    label: 'Code',
+    code: { type: 'string', label: 'Code',
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    options: [
 
-  name: {
-    type: 'string',
-    label: 'Name',
+    { value: 'value', label: 'value' },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+]
 
-  address1: {
-    type: 'string',
-    label: 'Address 1',
+    },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    name: { type: 'string', label: 'Name',
 
-  address2: {
-    type: 'string',
-    label: 'Address 2',
+    options: [
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    { value: 'value', label: 'value' },
 
-  city: {
-    type: 'relation_one',
-    label: 'City',
+]
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    },
 
-  state: {
-    type: 'relation_one',
-    label: 'State',
+    address1: { type: 'string', label: 'Address 1',
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    options: [
 
-  country: {
-    type: 'relation_one',
-    label: 'Country',
+    { value: 'value', label: 'value' },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+]
 
-  Postcode: {
-    type: 'string',
-    label: 'Postcode',
+    },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
-};
+    address2: { type: 'string', label: 'Address 2',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    city: { type: 'relation_one', label: 'City',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    state: { type: 'relation_one', label: 'State',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    country: { type: 'relation_one', label: 'Country',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    Postcode: { type: 'string', label: 'Postcode',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+}
 
 export default customerFields;

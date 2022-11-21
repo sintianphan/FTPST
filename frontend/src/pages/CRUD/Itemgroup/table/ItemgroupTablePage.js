@@ -7,6 +7,6 @@ const ItemgroupTablePage = () => {
       <ItemgroupTable />
     </div>
   );
-};
+}
 
 export default ItemgroupTablePage;

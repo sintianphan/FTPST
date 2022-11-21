@@ -50,7 +50,10 @@ const ChartofaccountSelectItem = (props) => {
     },
   };
 
-  const { form, ...rest } = props;
+  const {
+    form,
+    ...rest
+  } = props;
 
   return (
     <React.Fragment>
@@ -63,10 +66,12 @@ const ChartofaccountSelectItem = (props) => {
       />
     </React.Fragment>
   );
-};
+}
 
 const select = (state) => ({
-  hasPermissionToCreate: state.chartofaccount.hasPermissionToCreate,
+  hasPermissionToCreate: state.chartofaccount.hasPermissionToCreate
 });
 
-export default connect(select)(ChartofaccountSelectItem);
+export default connect(select)(
+  ChartofaccountSelectItem,
+);

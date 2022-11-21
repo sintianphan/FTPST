@@ -50,7 +50,10 @@ const ItemgroupSelectItem = (props) => {
     },
   };
 
-  const { form, ...rest } = props;
+  const {
+    form,
+    ...rest
+  } = props;
 
   return (
     <React.Fragment>
@@ -63,10 +66,12 @@ const ItemgroupSelectItem = (props) => {
       />
     </React.Fragment>
   );
-};
+}
 
 const select = (state) => ({
-  hasPermissionToCreate: state.itemgroup.hasPermissionToCreate,
+  hasPermissionToCreate: state.itemgroup.hasPermissionToCreate
 });
 
-export default connect(select)(ItemgroupSelectItem);
+export default connect(select)(
+  ItemgroupSelectItem,
+);

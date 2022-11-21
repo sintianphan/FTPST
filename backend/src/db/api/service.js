@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,28 +8,37 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class ServiceDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const service = await db.service.create(
-      {
-        id: data.id || undefined,
+  const service = await db.service.create(
+  {
+  id: data.id || undefined,
 
-        code: data.code || null,
-        name: data.name || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    code: data.code
+    ||
+    null
+,
 
-    return service;
+    name: data.name
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return service;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const service = await db.service.findByPk(id, {
@@ -37,33 +47,39 @@ module.exports = class ServiceDBApi {
 
     await service.update(
       {
-        code: data.code || null,
-        name: data.name || null,
+
+        code: data.code
+        ||
+        null
+,
+
+        name: data.name
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return service;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const service = await db.service.findByPk(id, options);
 
-    await service.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await service.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await service.destroy({
-      transaction,
+      transaction
     });
 
     return service;
@@ -72,13 +88,16 @@ module.exports = class ServiceDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const service = await db.service.findOne({ where }, { transaction });
+    const service = await db.service.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!service) {
       return service;
     }
 
-    const output = service.get({ plain: true });
+    const output = service.get({plain: true});
 
     return output;
   }
@@ -94,7 +113,9 @@ module.exports = class ServiceDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -107,14 +128,22 @@ module.exports = class ServiceDBApi {
       if (filter.code) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('service', 'code', filter.code),
+          [Op.and]: Utils.ilike(
+            'service',
+            'code',
+            filter.code,
+          ),
         };
       }
 
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('service', 'name', filter.name),
+          [Op.and]: Utils.ilike(
+            'service',
+            'name',
+            filter.name,
+          ),
         };
       }
 
@@ -126,7 +155,9 @@ module.exports = class ServiceDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -155,23 +186,24 @@ module.exports = class ServiceDBApi {
       }
     }
 
-    let { rows, count } = await db.service.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.service.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -183,13 +215,17 @@ module.exports = class ServiceDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('service', 'id', query),
+          Utils.ilike(
+            'service',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.service.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -200,4 +236,6 @@ module.exports = class ServiceDBApi {
       label: record.id,
     }));
   }
+
 };
+

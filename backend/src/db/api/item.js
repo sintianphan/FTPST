@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,32 +8,41 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class ItemDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const item = await db.item.create(
-      {
-        id: data.id || undefined,
+  const item = await db.item.create(
+  {
+  id: data.id || undefined,
 
-        code: data.code || null,
-        name: data.name || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    code: data.code
+    ||
+    null
+,
+
+    name: data.name
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
 
     await item.setItemgroup(data.itemgroup || null, {
-      transaction,
+    transaction,
     });
 
-    return item;
+  return item;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const item = await db.item.findByPk(id, {
@@ -41,11 +51,20 @@ module.exports = class ItemDBApi {
 
     await item.update(
       {
-        code: data.code || null,
-        name: data.name || null,
+
+        code: data.code
+        ||
+        null
+,
+
+        name: data.name
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     await item.setItemgroup(data.itemgroup || null, {
@@ -56,22 +75,19 @@ module.exports = class ItemDBApi {
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const item = await db.item.findByPk(id, options);
 
-    await item.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await item.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await item.destroy({
-      transaction,
+      transaction
     });
 
     return item;
@@ -80,16 +96,19 @@ module.exports = class ItemDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const item = await db.item.findOne({ where }, { transaction });
+    const item = await db.item.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!item) {
       return item;
     }
 
-    const output = item.get({ plain: true });
+    const output = item.get({plain: true});
 
     output.itemgroup = await item.getItemgroup({
-      transaction,
+      transaction
     });
 
     return output;
@@ -107,10 +126,12 @@ module.exports = class ItemDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
       {
         model: db.itemgroup,
         as: 'itemgroup',
       },
+
     ];
 
     if (filter) {
@@ -124,14 +145,22 @@ module.exports = class ItemDBApi {
       if (filter.code) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('item', 'code', filter.code),
+          [Op.and]: Utils.ilike(
+            'item',
+            'code',
+            filter.code,
+          ),
         };
       }
 
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('item', 'name', filter.name),
+          [Op.and]: Utils.ilike(
+            'item',
+            'name',
+            filter.name,
+          ),
         };
       }
 
@@ -143,18 +172,20 @@ module.exports = class ItemDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
       if (filter.itemgroup) {
-        var listItems = filter.itemgroup.split('|').map((item) => {
-          return Utils.uuid(item);
+        var listItems = filter.itemgroup.split('|').map(item => {
+          return  Utils.uuid(item)
         });
 
         where = {
           ...where,
-          itemgroupId: { [Op.or]: listItems },
+          itemgroupId: {[Op.or]: listItems}
         };
       }
 
@@ -183,23 +214,24 @@ module.exports = class ItemDBApi {
       }
     }
 
-    let { rows, count } = await db.item.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.item.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -211,13 +243,17 @@ module.exports = class ItemDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('item', 'id', query),
+          Utils.ilike(
+            'item',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.item.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -228,4 +264,6 @@ module.exports = class ItemDBApi {
       label: record.id,
     }));
   }
+
 };
+

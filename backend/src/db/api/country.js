@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,27 +8,32 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class CountryDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const country = await db.country.create(
-      {
-        id: data.id || undefined,
+  const country = await db.country.create(
+  {
+  id: data.id || undefined,
 
-        name: data.name || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    name: data.name
+    ||
+    null
+,
 
-    return country;
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return country;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const country = await db.country.findByPk(id, {
@@ -36,32 +42,34 @@ module.exports = class CountryDBApi {
 
     await country.update(
       {
-        name: data.name || null,
+
+        name: data.name
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return country;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const country = await db.country.findByPk(id, options);
 
-    await country.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await country.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await country.destroy({
-      transaction,
+      transaction
     });
 
     return country;
@@ -70,13 +78,16 @@ module.exports = class CountryDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const country = await db.country.findOne({ where }, { transaction });
+    const country = await db.country.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!country) {
       return country;
     }
 
-    const output = country.get({ plain: true });
+    const output = country.get({plain: true});
 
     return output;
   }
@@ -92,7 +103,9 @@ module.exports = class CountryDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -105,7 +118,11 @@ module.exports = class CountryDBApi {
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('country', 'name', filter.name),
+          [Op.and]: Utils.ilike(
+            'country',
+            'name',
+            filter.name,
+          ),
         };
       }
 
@@ -117,7 +134,9 @@ module.exports = class CountryDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -146,23 +165,24 @@ module.exports = class CountryDBApi {
       }
     }
 
-    let { rows, count } = await db.country.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.country.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -174,13 +194,17 @@ module.exports = class CountryDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('country', 'id', query),
+          Utils.ilike(
+            'country',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.country.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -191,4 +215,6 @@ module.exports = class CountryDBApi {
       label: record.id,
     }));
   }
+
 };
+

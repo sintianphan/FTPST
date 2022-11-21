@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,43 +8,64 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class CustomerDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const customer = await db.customer.create(
-      {
-        id: data.id || undefined,
+  const customer = await db.customer.create(
+  {
+  id: data.id || undefined,
 
-        code: data.code || null,
-        name: data.name || null,
-        address1: data.address1 || null,
-        address2: data.address2 || null,
-        Postcode: data.Postcode || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    code: data.code
+    ||
+    null
+,
+
+    name: data.name
+    ||
+    null
+,
+
+    address1: data.address1
+    ||
+    null
+,
+
+    address2: data.address2
+    ||
+    null
+,
+
+    Postcode: data.Postcode
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
 
     await customer.setCity(data.city || null, {
-      transaction,
+    transaction,
     });
 
     await customer.setState(data.state || null, {
-      transaction,
+    transaction,
     });
 
     await customer.setCountry(data.country || null, {
-      transaction,
+    transaction,
     });
 
-    return customer;
+  return customer;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const customer = await db.customer.findByPk(id, {
@@ -52,14 +74,35 @@ module.exports = class CustomerDBApi {
 
     await customer.update(
       {
-        code: data.code || null,
-        name: data.name || null,
-        address1: data.address1 || null,
-        address2: data.address2 || null,
-        Postcode: data.Postcode || null,
+
+        code: data.code
+        ||
+        null
+,
+
+        name: data.name
+        ||
+        null
+,
+
+        address1: data.address1
+        ||
+        null
+,
+
+        address2: data.address2
+        ||
+        null
+,
+
+        Postcode: data.Postcode
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     await customer.setCity(data.city || null, {
@@ -78,22 +121,19 @@ module.exports = class CustomerDBApi {
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const customer = await db.customer.findByPk(id, options);
 
-    await customer.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await customer.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await customer.destroy({
-      transaction,
+      transaction
     });
 
     return customer;
@@ -102,24 +142,27 @@ module.exports = class CustomerDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const customer = await db.customer.findOne({ where }, { transaction });
+    const customer = await db.customer.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!customer) {
       return customer;
     }
 
-    const output = customer.get({ plain: true });
+    const output = customer.get({plain: true});
 
     output.city = await customer.getCity({
-      transaction,
+      transaction
     });
 
     output.state = await customer.getState({
-      transaction,
+      transaction
     });
 
     output.country = await customer.getCountry({
-      transaction,
+      transaction
     });
 
     return output;
@@ -137,6 +180,7 @@ module.exports = class CustomerDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
       {
         model: db.city,
         as: 'city',
@@ -151,6 +195,7 @@ module.exports = class CustomerDBApi {
         model: db.country,
         as: 'country',
       },
+
     ];
 
     if (filter) {
@@ -164,35 +209,55 @@ module.exports = class CustomerDBApi {
       if (filter.code) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('customer', 'code', filter.code),
+          [Op.and]: Utils.ilike(
+            'customer',
+            'code',
+            filter.code,
+          ),
         };
       }
 
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('customer', 'name', filter.name),
+          [Op.and]: Utils.ilike(
+            'customer',
+            'name',
+            filter.name,
+          ),
         };
       }
 
       if (filter.address1) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('customer', 'address1', filter.address1),
+          [Op.and]: Utils.ilike(
+            'customer',
+            'address1',
+            filter.address1,
+          ),
         };
       }
 
       if (filter.address2) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('customer', 'address2', filter.address2),
+          [Op.and]: Utils.ilike(
+            'customer',
+            'address2',
+            filter.address2,
+          ),
         };
       }
 
       if (filter.Postcode) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('customer', 'Postcode', filter.Postcode),
+          [Op.and]: Utils.ilike(
+            'customer',
+            'Postcode',
+            filter.Postcode,
+          ),
         };
       }
 
@@ -204,40 +269,42 @@ module.exports = class CustomerDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
       if (filter.city) {
-        var listItems = filter.city.split('|').map((item) => {
-          return Utils.uuid(item);
+        var listItems = filter.city.split('|').map(item => {
+          return  Utils.uuid(item)
         });
 
         where = {
           ...where,
-          cityId: { [Op.or]: listItems },
+          cityId: {[Op.or]: listItems}
         };
       }
 
       if (filter.state) {
-        var listItems = filter.state.split('|').map((item) => {
-          return Utils.uuid(item);
+        var listItems = filter.state.split('|').map(item => {
+          return  Utils.uuid(item)
         });
 
         where = {
           ...where,
-          stateId: { [Op.or]: listItems },
+          stateId: {[Op.or]: listItems}
         };
       }
 
       if (filter.country) {
-        var listItems = filter.country.split('|').map((item) => {
-          return Utils.uuid(item);
+        var listItems = filter.country.split('|').map(item => {
+          return  Utils.uuid(item)
         });
 
         where = {
           ...where,
-          countryId: { [Op.or]: listItems },
+          countryId: {[Op.or]: listItems}
         };
       }
 
@@ -266,23 +333,24 @@ module.exports = class CustomerDBApi {
       }
     }
 
-    let { rows, count } = await db.customer.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.customer.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -294,13 +362,17 @@ module.exports = class CustomerDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('customer', 'id', query),
+          Utils.ilike(
+            'customer',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.customer.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -311,4 +383,6 @@ module.exports = class CustomerDBApi {
       label: record.id,
     }));
   }
+
 };
+

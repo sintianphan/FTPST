@@ -1,52 +1,59 @@
 module.exports = {
-  /**
-   * @param {QueryInterface} queryInterface
-   * @param {Sequelize} Sequelize
-   * @returns {Promise<void>}
-   */
-  async up(queryInterface, Sequelize) {
     /**
-     * @type {Transaction}
+     * @param {QueryInterface} queryInterface
+     * @param {Sequelize} Sequelize
+     * @returns {Promise<void>}
      */
-    const transaction = await queryInterface.sequelize.transaction();
-    try {
-      await queryInterface.addColumn(
-        'item',
-        'itemgroupId',
-        {
-          type: Sequelize.DataTypes.UUID,
+    async up(queryInterface, Sequelize) {
+        /**
+         * @type {Transaction}
+         */
+        const transaction = await queryInterface.sequelize.transaction();
+        try {
 
-          references: {
-            model: 'itemgroup',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
+                    await queryInterface.addColumn(
+                      'item',
+                      'itemgroupId',
+                      {
+                          type: Sequelize.DataTypes.UUID,
 
-      await transaction.commit();
-    } catch (err) {
-      await transaction.rollback();
-      throw err;
-    }
-  },
-  /**
-   * @param {QueryInterface} queryInterface
-   * @param {Sequelize} Sequelize
-   * @returns {Promise<void>}
-   */
-  async down(queryInterface, Sequelize) {
+                            references: {
+                                model: 'itemgroup',
+                                key: 'id',
+                            },
+
+                      },
+                      { transaction }
+                    );
+
+            await transaction.commit();
+        } catch (err) {
+            await transaction.rollback();
+            throw err;
+        }
+    },
     /**
-     * @type {Transaction}
+     * @param {QueryInterface} queryInterface
+     * @param {Sequelize} Sequelize
+     * @returns {Promise<void>}
      */
-    const transaction = await queryInterface.sequelize.transaction();
-    try {
-      await queryInterface.removeColumn('item', 'itemgroupId', { transaction });
+    async down(queryInterface, Sequelize) {
+        /**
+         * @type {Transaction}
+         */
+        const transaction = await queryInterface.sequelize.transaction();
+        try {
 
-      await transaction.commit();
-    } catch (err) {
-      await transaction.rollback();
-      throw err;
+                    await queryInterface.removeColumn(
+                        'item',
+                        'itemgroupId',
+                        { transaction }
+                    );
+
+            await transaction.commit();
+        } catch (err) {
+            await transaction.rollback();
+            throw err;
+        }
     }
-  },
 };
