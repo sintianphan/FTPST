@@ -28,6 +28,10 @@ module.exports = class SalesorderdetailsDBApi {
     transaction,
     });
 
+    await salesorderdetails.setDescription(data.description || null, {
+    transaction,
+    });
+
   return salesorderdetails;
   }
 
@@ -48,6 +52,10 @@ module.exports = class SalesorderdetailsDBApi {
     );
 
     await salesorderdetails.setItem(data.item || null, {
+      transaction,
+    });
+
+    await salesorderdetails.setDescription(data.description || null, {
       transaction,
     });
 
@@ -91,6 +99,10 @@ module.exports = class SalesorderdetailsDBApi {
       transaction
     });
 
+    output.description = await salesorderdetails.getDescription({
+      transaction
+    });
+
     return output;
   }
 
@@ -110,6 +122,11 @@ module.exports = class SalesorderdetailsDBApi {
       {
         model: db.item,
         as: 'item',
+      },
+
+      {
+        model: db.item,
+        as: 'description',
       },
 
     ];
@@ -144,6 +161,17 @@ module.exports = class SalesorderdetailsDBApi {
         where = {
           ...where,
           itemId: {[Op.or]: listItems}
+        };
+      }
+
+      if (filter.description) {
+        var listItems = filter.description.split('|').map(item => {
+          return  Utils.uuid(item)
+        });
+
+        where = {
+          ...where,
+          descriptionId: {[Op.or]: listItems}
         };
       }
 

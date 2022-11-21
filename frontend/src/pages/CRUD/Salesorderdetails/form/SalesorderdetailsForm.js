@@ -83,6 +83,15 @@ const SalesorderdetailsForm = (props) => {
         />
       </Grid>
 
+      <Grid item>
+        <ItemSelectItem
+        name={'description'}
+        schema={salesorderdetailsFields}
+        showCreate={!modal}
+        form={form}
+        />
+      </Grid>
+
   </Grid>
   <Grid container spacing={3} mt={2}>
     <Grid item>
