@@ -43,6 +43,10 @@ module.exports = class SalesorderDBApi {
     transaction,
     });
 
+    await salesorder.setItemcode(data.itemcode || [], {
+    transaction,
+    });
+
   return salesorder;
   }
 
@@ -78,6 +82,10 @@ module.exports = class SalesorderDBApi {
     );
 
     await salesorder.setOrderdetailsID(data.orderdetailsID || [], {
+      transaction,
+    });
+
+    await salesorder.setItemcode(data.itemcode || [], {
       transaction,
     });
 
@@ -121,6 +129,10 @@ module.exports = class SalesorderDBApi {
       transaction
     });
 
+    output.itemcode = await salesorder.getItemcode({
+      transaction
+    });
+
     return output;
   }
 
@@ -146,6 +158,17 @@ module.exports = class SalesorderDBApi {
           })
         }} : null,
         required: filter.orderdetailsID ? true : null,
+      },
+
+      {
+        model: db.item,
+        as: 'itemcode',
+        through: filter.itemcode ? { where: {
+          [Op.or]: filter.itemcode.split('|').map(item => {
+            return { ['Id']: Utils.uuid(item) }
+          })
+        }} : null,
+        required: filter.itemcode ? true : null,
       },
 
     ];

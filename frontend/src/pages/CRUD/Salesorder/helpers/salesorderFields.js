@@ -42,6 +42,16 @@ const salesorderFields = {
 
     },
 
+    itemcode: { type: 'relation_many', label: 'Itemcode',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
 }
 
 export default salesorderFields;
